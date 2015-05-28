@@ -44,7 +44,7 @@ namespace Scavenger
                 {
                     filtered.Add(item);
                 }
-                else if (filteredItem != null && filteredItem.Item2.Ticks < item.Item2.Ticks)
+                else if (filteredItem.Item2.Ticks < item.Item2.Ticks)
                 {
                     filtered.Remove(filteredItem);
                     filtered.Add(item);
