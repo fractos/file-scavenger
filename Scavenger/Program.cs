@@ -22,6 +22,11 @@ namespace Scavenger
             {
                 List<string> allEntries = new List<string>();
 
+                if (!Directory.Exists(source))
+                {
+                    throw new ApplicationException(String.Format("Source folder '{0}' does not exist", source));
+                }
+
                 foreach (string wildcard in wildcards.Split(new char[] {' '}, StringSplitOptions.RemoveEmptyEntries))
                 {
                     string[] entries = Directory.GetFileSystemEntries(source, wildcard, SearchOption.AllDirectories);
@@ -56,7 +61,8 @@ namespace Scavenger
                 foreach (Tuple<string, DateTime, string> item in filtered)
                 {
                     Console.WriteLine("Copying {0} to {1}", item.Item1, target);
-                    File.Copy(item.Item3, Path.Combine(target, item.Item1), true);
+                    string targetPathname = Path.Combine(target, item.Item1);
+                    File.Copy(item.Item3, targetPathname, true);
                 }
             }
         }
