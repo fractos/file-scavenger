@@ -18,7 +18,9 @@ namespace Scavenger
             
             List<Tuple<string, DateTime, string>> items = new List<Tuple<string, DateTime, string>>();
 
-            foreach (string source in sources)
+            List<string> ignore = sources.Where(s => s.StartsWith("!")).Select(s => s.Substring(1)).ToList();
+
+            foreach (string source in sources.Where(s => !s.StartsWith("!")))
             {
                 List<string> allEntries = new List<string>();
 
@@ -36,7 +38,10 @@ namespace Scavenger
                 foreach (string entry in allEntries)
                 {
                     FileInfo info = new FileInfo(entry);
-                    items.Add(new Tuple<string, DateTime, string>(info.Name, info.LastWriteTimeUtc, entry));
+                    if (!ignore.Contains(info.Name))
+                    {
+                        items.Add(new Tuple<string, DateTime, string>(info.Name, info.LastWriteTimeUtc, entry));
+                    }
                 }
             }
 
